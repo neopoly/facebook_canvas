@@ -9,8 +9,7 @@ Gem::Specification.new do |s|
   s.version     = FacebookCanvas::VERSION
   s.authors     = ["André Stuhrmann"]
   s.email       = ["as@neopoly.de"]
-  s.summary     = "Summary of FacebookCanvas."
-  s.description = "Description of FacebookCanvas."
+  s.summary     = "Rails engine for Facebook-Canvas integration."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.rdoc"]
