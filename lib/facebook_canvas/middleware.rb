@@ -2,10 +2,12 @@
 #
 # config/application.rb
 #
-#     module Panades
-#       class Application < Rails::Application
+#     module FacebookCanvas
+#       class Engine < ::Rails::Engine
 #         ...
-#         config.middleware.use "FacebookCanvas"
+#         initializer "FacebookCanvas.middleware" do |app|
+#           app.config.middleware.use FacebookCanvas::Middleware, /\.fb\./
+#         end
 #         ...
 #       end
 #     end
