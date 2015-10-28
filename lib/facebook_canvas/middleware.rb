@@ -11,7 +11,7 @@
 #     end
 #
 module FacebookCanvas
-  class Canvas
+  class Middleware
     def initialize(app, request_host)
       @app = app
       @request_host = request_host
