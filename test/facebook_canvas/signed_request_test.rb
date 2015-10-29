@@ -15,6 +15,12 @@ class FacebookCanvas::SignedRequestTest < ActiveSupport::TestCase
     assert signed_request_parser.user_id
   end
 
+  test "no user_id from signed request" do
+    signed_request_parser = FacebookCanvas::SignedRequest.new(signed_request, secret)
+
+    refute signed_request_parser.user_id
+  end
+
   private
 
   def fixture(name)
