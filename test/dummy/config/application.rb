@@ -10,6 +10,7 @@ require "facebook_canvas"
 
 module Dummy
   class Application < Rails::Application
+    FacebookCanvas.server_name = /./
   end
 end
 
