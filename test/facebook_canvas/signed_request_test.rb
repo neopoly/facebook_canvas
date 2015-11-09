@@ -21,6 +21,18 @@ class FacebookCanvas::SignedRequestTest < ActiveSupport::TestCase
     refute signed_request_parser.user_id
   end
 
+  test "get access_token from signed request" do
+    signed_request_parser = FacebookCanvas::SignedRequest.new(signed_request_user, secret)
+
+    assert signed_request_parser.access_token
+  end
+
+  test "no access_token from signed request" do
+    signed_request_parser = FacebookCanvas::SignedRequest.new(signed_request, secret)
+
+    refute signed_request_parser.access_token
+  end
+
   private
 
   def fixture(name)

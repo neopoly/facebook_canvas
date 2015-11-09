@@ -23,7 +23,11 @@ module FacebookCanvas
     end
 
     def user_id
-      payload["user_id"]
+      payload && payload["user_id"]
+    end
+
+    def access_token
+      payload && payload["oauth_token"]
     end
 
     private
