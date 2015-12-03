@@ -32,3 +32,7 @@ The default value is set to: `/\.fb\./`
 ```ruby
 FacebookCanvas.server_name = /SERVERNAME/
 ```
+
+## Ruby support
+
+This gem supports Ruby version 2.1 and 2.2.
