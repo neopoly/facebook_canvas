@@ -1,17 +1,12 @@
-# This Middleware should be inserted after Rack::MethodOverride
+# This middleware modifies the `REQUEST_METHOD` if needed and should be inserted
+# after the middleware `Rack::MethodOverride`
 #
-# config/application.rb
-#
-#     module FacebookCanvas
-#       class Engine < ::Rails::Engine
-#         ...
-#         initializer "FacebookCanvas.middleware" do |app|
-#           app.config.middleware.use FacebookCanvas::Middleware, /\.fb\./
-#         end
-#         ...
-#       end
-#     end
-#
+# All requests coming from Facebook to our canvas are POST requests.
+# We need to check whether the request was originally a GET request.
+# We assume that Rails inserts a hidden parameter called `utf8` for all non
+# GET requests.
+# So if this parameter is missing, the request is a `GET` request and therefor
+# we force the `REQUEST_METHOD` to GET.
 module FacebookCanvas
   class Middleware
     def initialize(app, request_host)
@@ -19,12 +14,7 @@ module FacebookCanvas
       @request_host = request_host
     end
 
-    # All requests coming from facebook to our canvas are POST requests.
-    # We need to check wether the request was originally a GET request.
-    # We assume that rails inserts a hidden parameter with UTF8 for all non
-    # GET requests.
-    # So if this parameter is missing, the request is a GET request and there for
-    # we set the REQUEST_METHOD to GET.
+    # Forces REQUEST_METHOD to GET if required.
     def call(env)
       if matches_server_name?(env) && was_get_request?(env)
         env["REQUEST_METHOD"] = "GET"
