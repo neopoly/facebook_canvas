@@ -1,4 +1,17 @@
+[github]: https://github.com/neopoly/facebook_canvas
+[doc]: http://rubydoc.info/github/neopoly/facebook_canvas/master/file/README.md
+[gem]: https://rubygems.org/gems/facebook_canvas
+[travis]: https://travis-ci.org/neopoly/facebook_canvas
+[codeclimate]: https://codeclimate.com/github/neopoly/facebook_canvas
+[inchpages]: https://inch-ci.org/github/neopoly/facebook_canvas
+
 # FacebookCanvas
+
+[![Travis](https://img.shields.io/travis/neopoly/facebook_canvas.svg?branch=master)][travis]
+[![Gem Version](https://img.shields.io/gem/v/facebook_canvas.svg)][gem]
+[![Code Climate](https://img.shields.io/codeclimate/github/neopoly/facebook_canvas.svg)][codeclimate]
+[![Test Coverage](https://codeclimate.com/github/neopoly/facebook_canvas/badges/coverage.svg)][codeclimate]
+[![Inline docs](https://inch-ci.org/github/neopoly/facebook_canvas.svg?branch=master&style=flat)][inchpages]
 
 Make your Rails application fit to run in a Facebook canvas.
 
