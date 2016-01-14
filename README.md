@@ -34,7 +34,7 @@ gem 'facebook_canvas'
 
 `FacebookCanvas.server_name` is a regular expression that matches the url to your Facebook *Secure Canvas URL*.
 
-The default value is set to: `/.*/`
+The default value is set to: `/.*/`.
 This means that it works for any *Secure Canvas URL*.
 
 If you want to use a specific *Secure Canvas URL*, set the regular expression for `FacebookCanvas.server_name` inside an initializer:
