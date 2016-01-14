@@ -47,7 +47,7 @@ This means if your *Secure Canvas URL* is available through:
 
 `https://<something>.fb.<something>.<something>/` e.g. `https://my-project.fb.neopoly.com/` it works out of the box without any additional configuration.
 
-If your *Secure Canvas URL* differs from this pattern you can reconfigure the default FacebookCanvas.server_name inside an initializer.
+If your *Secure Canvas URL* differs from this pattern you can reconfigure the default `FacebookCanvas.server_name` inside an initializer.
 
 ```ruby
 FacebookCanvas.server_name = /SERVERNAME/
