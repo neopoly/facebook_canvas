@@ -39,8 +39,15 @@ gem 'facebook_canvas'
 
 ## Configuration
 
-In your Rails application you can set the server name in which the application runs for Facebook canvas.
+`FacebookCanvas.server_name` is a regular expression that matches the url to your Facebook *Secure Canvas URL*.
+
 The default value is set to: `/\.fb\./`
+
+This means if your *Secure Canvas URL* is available through:
+
+`https://<something>.fb.<something>.<something>/` e.g. `https://my-project.fb.neopoly.com/` it works out of the box without any additional configuration.
+
+If your *Secure Canvas URL* differs from this pattern you can reconfigure the default FacebookCanvas.server_name inside an initializer.
 
 ```ruby
 FacebookCanvas.server_name = /SERVERNAME/
