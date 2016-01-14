@@ -77,3 +77,11 @@ This gem supports Ruby version 2.1 and 2.2.
 
 FacebookCanvas is released under the MIT License. See the MIT-LICENSE file for further
 details.
+
+## Release
+
+Follow these steps to release this gem:
+
+    edit lib/facebook_canvas/version.rb
+    git commit -m "Release vX.Y.Z"
+    rake release
