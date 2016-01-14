@@ -15,27 +15,20 @@
 
 Make your Rails application fit to run in a Facebook canvas.
 
+
 ## Why?
 
-All requests coming from Facebook to the canvas are `POST` requests.
-So a way is needed to handle those request in the application.
+Web apps need to handle both `GET` and `POST` requests, but in Facebook canvas apps all requests coming from Facebook are `POST` requests. `FacebookCanvas` provides a way to differentiate between `GET` and `POST` anyway.
 
-## How?
-
-First check wether the request was originally a `GET` request.
-For that we assume that Rails inserts a hidden parameter with UTF8 for all non `GET` requests.
-So if this parameter is missing, the request is a `GET` request and therefor the `REQUEST_METHOD` is set to `GET`.
-
-The second action which this enigne does, is to save the `SIGNED_REQUEST` in the `default_url_options` hash.
-So you have access about the user over the entire application.
 
 ## Installation
 
-### `Gemfile`
+Add this line to your application's Gemfile:
 
 ```ruby
 gem 'facebook_canvas'
 ```
+
 
 ## Configuration
 
@@ -50,9 +43,37 @@ This means if your *Secure Canvas URL* is available through:
 If your *Secure Canvas URL* differs from this pattern you can reconfigure the default `FacebookCanvas.server_name` inside an initializer.
 
 ```ruby
+# config/initializers/facebook_canvas.rb
+
 FacebookCanvas.server_name = /SERVERNAME/
 ```
+
+
+## How does this work?
+
+First check whether the request was originally a `GET` request.
+For that we assume that Rails inserts a hidden parameter with UTF8 for all non `GET` requests.
+So if this parameter is missing, the request is a `GET` request and therefor the `REQUEST_METHOD` is set to `GET`.
+
+The second action which this enigne does, is to save the `SIGNED_REQUEST` in the `default_url_options` hash.
+So you have access about the user over the entire application.
+
 
 ## Ruby support
 
 This gem supports Ruby version 2.1 and 2.2.
+
+
+## Contributing
+
+1. [Fork it!](http://github.com/neopoly/facebook_canvas/fork)
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
+
+
+## License
+
+FacebookCanvas is released under the MIT License. See the MIT-LICENSE file for further
+details.
