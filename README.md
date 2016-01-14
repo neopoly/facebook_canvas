@@ -34,18 +34,16 @@ gem 'facebook_canvas'
 
 `FacebookCanvas.server_name` is a regular expression that matches the url to your Facebook *Secure Canvas URL*.
 
-The default value is set to: `/\.fb\./`
+The default value is set to: `/.*/`
+This means that it works for any *Secure Canvas URL*.
 
-This means if your *Secure Canvas URL* is available through:
-
-`https://<something>.fb.<something>.<something>/` e.g. `https://my-project.fb.neopoly.com/` it works out of the box without any additional configuration.
-
-If your *Secure Canvas URL* differs from this pattern you can reconfigure the default `FacebookCanvas.server_name` inside an initializer.
+If you want to use a specific *Secure Canvas URL*, set the regular expression for `FacebookCanvas.server_name` inside an initializer:
 
 ```ruby
 # config/initializers/facebook_canvas.rb
 
-FacebookCanvas.server_name = /SERVERNAME/
+# treat URLs like http://fb.myproject.com as Facebook canvas requests
+FacebookCanvas.server_name = /\.fb\./
 ```
 
 
