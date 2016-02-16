@@ -37,13 +37,23 @@ gem 'facebook_canvas'
 The default value is set to: `/.*/`.
 This means that it works for any *Secure Canvas URL*.
 
-If you want to use a specific *Secure Canvas URL*, set the regular expression for `FacebookCanvas.server_name` inside an initializer:
+`FacebookCanvas.custom_filter` is a block called by the middleware to prevent rewriting of the `REQUEST_METHOD`.
+The default value is set to: `proc { |env| true }`.
+This means that every non-`GET` request (which matches the configured `server_name` above) will be
+rewritten to `GET` if the UTF8 parameter is missing.
+
+If you want to use a specific *Secure Canvas URL* (or any other configuration), set the regular expression for `FacebookCanvas.server_name` inside an initializer:
 
 ```ruby
 # config/initializers/facebook_canvas.rb
 
 # treat URLs like http://fb.myproject.com as Facebook canvas requests
 FacebookCanvas.server_name = /\.fb\./
+
+# Do not rewrite POST requests from Facebook to "/facebook_realtime_updates"
+FacebookCanvas.custom_filter = proc do |env|
+  env['PATH_INFO'] !~ %r{^/facebook_realtime_updates}
+end
 ```
 
 

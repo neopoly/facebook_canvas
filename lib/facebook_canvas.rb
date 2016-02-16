@@ -4,5 +4,5 @@ require "facebook_canvas/helpers"
 require "facebook_canvas/signed_request"
 
 module FacebookCanvas
-  mattr_accessor :server_name
+  mattr_accessor :server_name, :custom_filter
 end
