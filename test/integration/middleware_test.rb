@@ -10,4 +10,9 @@ class FacebookCanvas::MiddlewareTest < ActionDispatch::IntegrationTest
     post '/foo/create', { "utf8" => "utf" }
     assert_response :success
   end
+
+  test 'do not convert xhr requests' do
+    xhr :post, '/foo/create'
+    assert_response :success
+  end
 end
