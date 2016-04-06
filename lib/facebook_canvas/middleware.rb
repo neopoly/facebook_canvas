@@ -20,7 +20,7 @@ module FacebookCanvas
 
     # Forces REQUEST_METHOD to GET if required.
     def call(env)
-      if matches_server_name?(env) && was_get_request?(env) && custom_filter?(env)
+      if matches_server_name?(env) && was_get_request?(env) && !was_xhr_request?(env) && custom_filter?(env)
         env["REQUEST_METHOD"] = "GET"
       end
       @app.call env
@@ -35,6 +35,10 @@ module FacebookCanvas
     def was_get_request?(env)
       form_hash = env["rack.request.form_hash"] || {}
       !form_hash["utf8"]
+    end
+
+    def was_xhr_request?(env)
+      env['HTTP_X_REQUESTED_WITH'] == 'XMLHttpRequest'
     end
 
     def custom_filter?(env)
