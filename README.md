@@ -66,6 +66,9 @@ So if this parameter is missing, the request is a `GET` request and therefor the
 The second action which this enigne does, is to save the `SIGNED_REQUEST` in the `default_url_options` hash.
 So you have access about the user over the entire application.
 
+### XHR requests
+
+All `XHR` requests (with header `X-REQUESTED-WITH` set to `XMLHttpRequest`) are not modified.
 
 ## Ruby support
 
