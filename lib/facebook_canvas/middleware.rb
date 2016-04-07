@@ -20,7 +20,7 @@ module FacebookCanvas
 
     # Forces REQUEST_METHOD to GET if required.
     def call(env)
-      if matches_server_name?(env) && was_get_request?(env) && !xhr_request?(env) && custom_filter?(env)
+      if matches_server_name?(env) && originally_was_get_request?(env) && !xhr_request?(env) && custom_filter?(env)
         env["REQUEST_METHOD"] = "GET"
       end
       @app.call env
@@ -32,7 +32,7 @@ module FacebookCanvas
       @request_host =~ env["SERVER_NAME"]
     end
 
-    def was_get_request?(env)
+    def originally_was_get_request?(env)
       !submitted_via_rails_form?(env)
     end
 
