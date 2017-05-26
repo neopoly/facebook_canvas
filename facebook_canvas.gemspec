@@ -17,4 +17,5 @@ Gem::Specification.new do |s|
 
   s.add_dependency "rails", "~> 4.2.1"
   s.add_dependency "minitest-rails"
+  s.add_dependency "minitest-focus"
 end
