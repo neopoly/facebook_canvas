@@ -1,0 +1,91 @@
+require 'test_helper'
+
+class FacebookCanvas::MiddlewareTest < ActiveSupport::TestCase
+  let(:middleware) { FacebookCanvas::Middleware.new(app, request_host, custom_filter) }
+  let(:request_host) { %r{.*} }
+  let(:custom_filter) { proc { |_env| true } }
+  let(:app) { proc { |env| [200, {}, env] } }
+  let(:env) {
+    {
+      "SERVER_NAME" => "test.host",
+      "REQUEST_METHOD" => original_request_method,
+    }
+  }
+  let(:original_request_method) { "POST" }
+
+  describe "request_host" do
+    describe "matching any host" do
+      let(:request_host) { %r{.*} }
+
+      test "modifies request method to GET" do
+        env["SERVER_NAME"] = "anything"
+        assert_request_method "GET"
+      end
+    end
+
+    describe "matching speficic host" do
+      let(:request_host) { %r{\.fb\.} }
+
+      test "modifies request method to GET if matched" do
+        env["SERVER_NAME"] = "test.fb.host"
+        assert_request_method "GET"
+      end
+
+      test "does not change request method" do
+        env["SERVER_NAME"] = "test.facebook.host"
+        refute_request_method_change
+      end
+    end
+  end
+
+  describe "custom_filter" do
+    let(:custom_filter) do
+      proc { |env| env[:pass_custom_filter] }
+    end
+
+    test "modifies request method to GET if matched" do
+      env[:pass_custom_filter] = true
+      assert_request_method "GET"
+    end
+
+    test "prevents change of request method" do
+      env[:pass_custom_filter] = false
+      refute_request_method_change
+    end
+  end
+
+  describe "with Rails' POST request" do
+    before do
+      env["rack.request.form_hash"] = {
+        "utf8" => "✓"
+      }
+    end
+
+    test "does not change request method" do
+      refute_request_method_change
+    end
+  end
+
+  describe "with Rails' XHR requests" do
+    before do
+      env["HTTP_X_REQUESTED_WITH"] = "XMLHttpRequest"
+    end
+
+    test "does not change request method" do
+      refute_request_method_change
+    end
+  end
+
+  private
+
+  def assert_request_method(expected)
+    status, headers, body = middleware.call(env)
+
+    assert_instance_of Hash, body
+    assert_equal expected, body.fetch("REQUEST_METHOD")
+  end
+
+  def refute_request_method_change
+    assert_request_method original_request_method
+  end
+end

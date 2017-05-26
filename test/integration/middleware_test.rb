@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class FacebookCanvas::MiddlewareTest < ActionDispatch::IntegrationTest
+class FacebookCanvas::IntegrationMiddlewareTest < ActionDispatch::IntegrationTest
   test 'convert post to get request' do
     post '/foo/index'
     assert_response :success
