@@ -1,9 +1,10 @@
 require 'test_helper'
 
 class FacebookCanvas::MiddlewareTest < ActiveSupport::TestCase
-  let(:middleware) { FacebookCanvas::Middleware.new(app, request_host, custom_filter) }
+  let(:middleware) { FacebookCanvas::Middleware.new(app, request_host, custom_filter, **kwargs) }
   let(:request_host) { %r{.*} }
   let(:custom_filter) { proc { |_env| true } }
+  let(:kwargs) { {} }
   let(:app) { proc { |env| [200, {}, env] } }
   let(:env) {
     {
@@ -102,6 +103,45 @@ class FacebookCanvas::MiddlewareTest < ActiveSupport::TestCase
 
     test "does not change request method" do
       refute_request_method_change
+    end
+  end
+
+  describe "inside_filter" do
+    describe "is optional" do
+      test "modifies request method to GET if matched" do
+        # no kwargs
+        assert_request_method "GET"
+      end
+    end
+
+    describe "is set" do
+      before do
+        kwargs[:inside_filter] = proc { |env| env[:pass_inside_filter] }
+      end
+
+      describe "accepted by the filter" do
+        before do
+          env[:pass_inside_filter] = true
+        end
+
+        test ".inside?(env) returns true" do
+          _, _, new_env = middleware.call(env)
+          assert FacebookCanvas::Middleware.inside?(new_env)
+        end
+
+        test "modifies request method to GET if matched" do
+          assert_request_method "GET"
+        end
+      end
+
+      describe "denied by the filter" do
+        before do
+          env[:pass_inside_filter] = false
+        end
+        test "does not change request method" do
+          refute_request_method_change
+        end
+      end
     end
   end
 
