@@ -14,13 +14,15 @@ module FacebookCanvas
   class Middleware
     def initialize(app, request_host, custom_filter)
       @app = app
-      @request_host = request_host
+      @request_host = proc_for_request_host(request_host)
       @custom_filter = custom_filter
     end
 
     # Forces REQUEST_METHOD to GET if required.
     def call(env)
-      if matches_server_name?(env) && was_get_request?(env) && !was_xhr_request?(env) && custom_filter?(env)
+      inside = matches_server_name?(env)
+
+      if inside && was_get_request?(env) && !was_xhr_request?(env) && custom_filter?(env)
         env["REQUEST_METHOD"] = "GET"
       end
       @app.call env
@@ -28,8 +30,19 @@ module FacebookCanvas
 
     private
 
+    def proc_for_request_host(request_host)
+      case request_host
+      when Regexp
+        proc { |env| request_host =~ env["SERVER_NAME"] }
+      when Proc
+        request_host
+      else
+        raise ArgumentError, "Expected Regexp or Proc for `request_host` but got: #{request_host.inspect}"
+      end
+    end
+
     def matches_server_name?(env)
-      @request_host =~ env["SERVER_NAME"]
+      @request_host.call(env)
     end
 
     def was_get_request?(env)
