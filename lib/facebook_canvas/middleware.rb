@@ -12,24 +12,58 @@
 # Addionally you can restrict `REQUEST_METHOD` rewriting by providing a `custom_filter` block.
 module FacebookCanvas
   class Middleware
-    def initialize(app, request_host, custom_filter)
+    ENV_INSIDE = "facebook_canvas.inside".freeze
+
+    def initialize(app, request_host, custom_filter, inside_filter: nil)
       @app = app
-      @request_host = request_host
+      @request_host = proc_for_request_host(request_host)
       @custom_filter = custom_filter
+      @inside_filter = inside_filter
     end
 
     # Forces REQUEST_METHOD to GET if required.
     def call(env)
-      if matches_server_name?(env) && was_get_request?(env) && !was_xhr_request?(env) && custom_filter?(env)
+      inside = match_inside?(env)
+
+      if inside
+        self.class.inside!(env)
+      end
+
+      if inside && matches_server_name?(env) && was_get_request?(env) && !was_xhr_request?(env) && custom_filter?(env)
         env["REQUEST_METHOD"] = "GET"
       end
       @app.call env
     end
 
+    # Check whether current request is marked as "inside Facebook Canvas"
+    def self.inside!(env)
+      env[ENV_INSIDE] = true
+    end
+
+    # Mark current request as "inside Facebook Canvas"
+    def self.inside?(env)
+      env[ENV_INSIDE]
+    end
+
     private
 
+    def match_inside?(env)
+      @inside_filter.nil? || @inside_filter.call(env)
+    end
+
+    def proc_for_request_host(request_host)
+      case request_host
+      when Regexp
+        proc { |env| request_host =~ env["SERVER_NAME"] }
+      when Proc
+        request_host
+      else
+        raise ArgumentError, "Expected Regexp or Proc for `request_host` but got: #{request_host.inspect}"
+      end
+    end
+
     def matches_server_name?(env)
-      @request_host =~ env["SERVER_NAME"]
+      @request_host.call(env)
     end
 
     def was_get_request?(env)

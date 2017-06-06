@@ -42,6 +42,13 @@ The default value is set to: `proc { |env| true }`.
 This means that every non-`GET` request (which matches the configured `server_name` above) will be
 rewritten to `GET` if the UTF8 parameter is missing.
 
+`FacebookCanvas.inside_filter` is a block called by the middleware to determine whether a request is "inside" (via `FacebookCanvas::Middleware.inside?(request)`) a facebook canvas.
+This might be useful, if your application wants to behave differently whether (or not) a request is coming from facebook canvas.
+
+The default value is set to: `proc { |env| true }`.
+This means that every request is treated as "inside" of a facebook canvas.
+
+
 If you want to use a specific *Secure Canvas URL* (or any other configuration), set the regular expression for `FacebookCanvas.server_name` inside an initializer:
 
 ```ruby
@@ -53,6 +60,11 @@ FacebookCanvas.server_name = /\.fb\./
 # Do not rewrite POST requests from Facebook to "/facebook_realtime_updates"
 FacebookCanvas.custom_filter = proc do |env|
   env['PATH_INFO'] !~ %r{^/facebook_realtime_updates}
+end
+
+# Determine whether a request is "inside" facebook canvas
+FacebookCanvas.inside_filter = proc do |env|
+  # Pull from session or request host or ...
 end
 ```
 
