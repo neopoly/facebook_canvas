@@ -105,6 +105,10 @@ details.
 
 Follow these steps to release this gem:
 
+    # Bump version in
     edit lib/facebook_canvas/version.rb
+    edit README.md
+
     git commit -m "Release vX.Y.Z"
+
     rake release
