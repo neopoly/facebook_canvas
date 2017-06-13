@@ -1,19 +1,24 @@
 language: ruby
 sudo: false
 cache: bundler
+
 rvm:
   - 2.4.1
   - 2.3.4
   - 2.2
   - 2.1
+
 after_success:
   - '[ "${TRAVIS_JOB_NUMBER#*.}" = "1" ] && [ "$TRAVIS_BRANCH" = "master" ] && bundle exec codeclimate-test-reporter'
+
 env:
   global:
     - CODECLIMATE_REPO_TOKEN=acc8d295e123e4a19f9b9f95c63770f9dda68187d007c77097e3d0bd531e945d
   matrix:
     - RAILS_VERSION=4.2
     - RAILS_VERSION=5.1
+
+matrix:
   exclude:
     - rvm: 2.2
       env: RAILS_VERSION=5.1
