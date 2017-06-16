@@ -1,10 +1,10 @@
 class FooController < ApplicationController
   def index
-    render nothing: true
+    head :ok
   end
 
   def create
-    render nothing: true
+    head :ok
   end
 
   def update
