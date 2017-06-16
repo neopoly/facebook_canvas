@@ -26,7 +26,7 @@ Web apps need to handle both `GET` and `POST` requests, but in Facebook canvas a
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'facebook_canvas', '~> 0.5.0'
+gem 'facebook_canvas', '~> 0.6.0'
 ```
 
 
