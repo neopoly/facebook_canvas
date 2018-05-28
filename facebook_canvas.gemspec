@@ -16,6 +16,6 @@ Gem::Specification.new do |s|
   s.test_files = Dir["test/**/*"]
 
   s.add_dependency "rails"
-  s.add_dependency "minitest-rails"
-  s.add_dependency "minitest-focus"
+  s.add_development_dependency "minitest-rails"
+  s.add_development_dependency "minitest-focus"
 end
