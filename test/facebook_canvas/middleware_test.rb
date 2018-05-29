@@ -148,7 +148,7 @@ class FacebookCanvas::MiddlewareTest < ActiveSupport::TestCase
   private
 
   def assert_request_method(expected)
-    status, headers, body = middleware.call(env)
+    _status, _headers, body = middleware.call(env)
 
     assert_instance_of Hash, body
     assert_equal expected, body.fetch("REQUEST_METHOD")
